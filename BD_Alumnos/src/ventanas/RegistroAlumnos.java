@@ -237,14 +237,18 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         //Codigo que permite consultar registros en la base de datos
         try{
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/universidad_lab4", "root", "admin");
-            PreparedStatement pst = cn.prepareStatement("select * from maestro where ID = ?");
+            PreparedStatement pst = cn.prepareStatement("select * from maestro where ID_Maestro = ?");
             pst.setString(1, txt_buscar.getText().trim());
             
             ResultSet rs = pst.executeQuery();
             // si el eof o el siguiente
             if(rs.next()){
-                txt_nombre.setText(rs.getString("NombreAlumno"));
-                //txt_grupo.setText(rs.getString("Grupo"));
+                txt_idmaestro.setText(rs.getString("ID_Maestro"));
+                txt_nombre.setText(rs.getString("Nombre_Maestro"));
+                txt_apellido.setText(rs.getString("Apellido_Maestro"));
+                txt_edad.setText(rs.getString("Edad"));
+                txt_direccion.setText(rs.getString("Direccion_Maestro"));
+                txt_estadomaestro.setText(rs.getString("Estado_Maestro"));
             } else {
                 JOptionPane.showMessageDialog(null, "Alumno no registrado.");
             }
@@ -258,13 +262,18 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Codigo que permite actualizar registros en la base de datos
         try {
-            String ID = txt_buscar.getText().trim();
+            String ID= txt_buscar.getText().trim();
             
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_ins", "admin", "admin");
-            PreparedStatement pst = cn.prepareStatement("update alumnos set NombreAlumno = ?, Grupo = ? where ID = " + ID);
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/universidad_lab4", "root", "admin");
+            PreparedStatement pst = cn.prepareStatement("update maestro set ID_Maestro = ?,Nombre_Maestro = ?,Apellido_Maestro = ?,Edad = ?,Direccion_Maestro = ?,Estado_Maestro = ? where ID_Maestro = " + ID);
             
-            pst.setString(1, txt_nombre.getText().trim());
-           // pst.setString(2, txt_grupo.getText().trim());
+            pst.setString(1, txt_idmaestro.getText().trim());
+            pst.setString(2, txt_nombre.getText().trim());
+            pst.setString(3, txt_apellido.getText().trim());
+            pst.setString(4, txt_edad.getText().trim());
+            pst.setString(5, txt_direccion.getText().trim());
+            pst.setString(6, txt_estadomaestro.getText().trim());
+            
             pst.executeUpdate();
             
             label_status.setText("Modificación exitosa.");
@@ -277,15 +286,18 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Codigo que permite borrar registros en la base de datos
         try {
-             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_ins", "admin", "admin");
-            PreparedStatement pst = cn.prepareStatement("delete from alumnos where ID = ?");
+             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/universidad_lab4", "root", "admin");
+            PreparedStatement pst = cn.prepareStatement("delete from maestro where ID_Maestro = ?");
             
             pst.setString(1, txt_buscar.getText().trim());
             pst.executeUpdate();
             
+            txt_idmaestro.setText("");
             txt_nombre.setText("");
-            //txt_grupo.setText("");
-            txt_buscar.setText("");
+            txt_apellido.setText("");
+            txt_edad.setText("");
+            txt_direccion.setText("");
+            txt_estadomaestro.setText("");
             
             label_status.setText("Registro eliminado.");
             
